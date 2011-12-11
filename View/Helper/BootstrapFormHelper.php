@@ -10,7 +10,7 @@ class BootstrapFormHelper extends AppHelper {
 		$default = array(
 			'type' => null,
 			'label' => null,
-			'before' => null, // to convert .input-prepend
+			'prepend' => null, // to convert .input-prepend
 			'after' => null, // to convert .help-inline
 			'div' => array(
 				'class' => 'input',
@@ -40,8 +40,8 @@ class BootstrapFormHelper extends AppHelper {
 				'class' => 'help-block',
 			));
 		}
-		if ($options['before']) {
-			$options = $this->_prepend($options['before'], $options);
+		if ($options['prepend']) {
+			$options = $this->_prepend($options['prepend'], $options);
 		}
 
 		$form = $this->Form->input($name, $options);
@@ -65,7 +65,7 @@ class BootstrapFormHelper extends AppHelper {
 
 	protected function _prepend($before, $options) {
 		$before = $this->Html->tag('span', $before, array('class' => 'add-on'));
-		$options['before'] = '<div class="input-prepend">' . $before;
+		$options['prepend'] = '<div class="input-prepend">' . $before;
 		$options['after'] .= '</div>';
 		return $options;
 	}
