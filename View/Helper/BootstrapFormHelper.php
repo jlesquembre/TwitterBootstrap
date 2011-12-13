@@ -17,6 +17,7 @@ class BootstrapFormHelper extends AppHelper {
 			),
 		);
 		$options = Set::merge($default, $options);
+		$options['type']='text'; //To disable spin box
 
 		$out = array();
 
@@ -42,6 +43,7 @@ class BootstrapFormHelper extends AppHelper {
 		}
 		if ($options['prepend']) {
 			$options = $this->_prepend($options['prepend'], $options);
+			$options['before'] = $options['prepend'];
 		}
 
 		$form = $this->Form->input($name, $options);
@@ -64,8 +66,13 @@ class BootstrapFormHelper extends AppHelper {
 	}
 
 	protected function _prepend($before, $options) {
-		$before = $this->Html->tag('span', $before, array('class' => 'add-on'));
-		$options['prepend'] = '<div class="input-prepend">' . $before;
+		if(strpos($options['prepend'], 'checked="checked"')){
+			$before = $this->Html->tag('span', $before, array('class' => 'add-on active'));
+		}
+		else {
+			$before = $this->Html->tag('span', $before, array('class' => 'add-on'));
+		}
+		$options['prepend'] = '<div class="input-prepend">' . $before;		
 		$options['after'] .= '</div>';
 		return $options;
 	}
@@ -167,6 +174,15 @@ class BootstrapFormHelper extends AppHelper {
 		$out = $this->Html->tag('button', $caption, $options);
 		$out = $this->Html->tag('div', $out, $divOptions);
 		return $out;
+	}
+	
+	public function select($name, $options = array(), $attributes = array()) {		
+		$out = $this->Form->select($name, $options,$attributes);
+		$out = $this->Html->div('input',$out);
+		$out = '<label>'.$attributes['label'].'</label>'.$out;
+		$out = $this->Html->div('clearfix',$out);
+		return $out;
+		
 	}
 
 }
